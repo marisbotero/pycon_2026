@@ -5,6 +5,7 @@ Esta guía es para quien dirige el taller. El notebook es para participantes.
 ## Antes de abrir la sala
 
 - Confirmar que `ollama list` muestra `gemma2:2b`.
+- Ejecutar `python verificar_instalacion.py`.
 - Ejecutar `PYTHONPATH=. pytest -q`.
 - Ejecutar una conversación con `python agente/main.py`.
 - Tener preparado `python agente/main.py --demo` como plan B.

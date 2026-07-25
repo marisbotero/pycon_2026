@@ -94,14 +94,29 @@ md(
 En una terminal:
 
 ```bash
+git clone https://github.com/marisbotero/pycon_2026.git
+cd pycon_2026/taller_agentes
+
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+
 ollama pull gemma2:2b
 ollama serve
 ```
 
-En otra:
+En Windows, activa el entorno con `.venv\\Scripts\\activate`.
+
+Antes de continuar:
 
 ```bash
-python -m pip install -r requirements.txt
+python verificar_instalacion.py
+PYTHONPATH=. pytest -q
+```
+
+Después ejecuta la primera prueba:
+
+```bash
 cd agente
 python main.py --demo
 ```
@@ -580,7 +595,7 @@ experimentando después del taller.
 nb["cells"] = cells
 nb["metadata"] = {
     "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-    "language_info": {"name": "python", "version": "3.10"},
+    "language_info": {"name": "python", "version": "3.9"},
 }
 nbf.write(nb, ROOT / "Workshop_Agentes.ipynb")
 print(f"Notebook generado: {len(cells)} celdas")

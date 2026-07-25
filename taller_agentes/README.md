@@ -19,7 +19,8 @@ Al terminar tendrás a **Astra**, un agente que:
 
 ## Preparación antes del taller
 
-Necesitas Python 3.10+, Git y Ollama.
+Necesitas Python 3.9+, Git y
+[Ollama](https://ollama.com/download). No necesitas una API key.
 
 ```bash
 git clone https://github.com/marisbotero/pycon_2026.git
@@ -41,10 +42,15 @@ En Windows, activa el entorno con:
 Comprueba la preparación:
 
 ```bash
+python verificar_instalacion.py
 PYTHONPATH=. pytest -q
 cd agente
 python main.py --demo
 ```
+
+El verificador confirma la versión de Python, pandas, el cliente de Ollama, el
+servidor local y la presencia de `gemma2:2b`. Si algo falta, muestra el comando
+exacto para corregirlo.
 
 ## La ruta de dos horas
 
@@ -79,6 +85,7 @@ taller_agentes/
 │   ├── CHEAT_SHEET.md         referencia rápida
 │   └── 01_* … 05_*            respuestas por actividad
 ├── tests/                     pruebas automatizadas
+├── verificar_instalacion.py   diagnóstico previo
 ├── GUIA_FACILITACION.md       ritmo, checkpoints y plan B
 ├── setup_ollama.md            ayuda de instalación
 └── scripts/build_notebook.py  fuente reproducible del notebook

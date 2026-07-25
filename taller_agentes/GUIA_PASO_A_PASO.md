@@ -12,8 +12,9 @@ Una terminal en `taller_agentes/`.
 ### Ejecuta
 
 ```bash
-source ../.venv/bin/activate
+source .venv/bin/activate
 ollama list
+python verificar_instalacion.py
 PYTHONPATH=. pytest -q
 ```
 
