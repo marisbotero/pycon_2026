@@ -66,6 +66,7 @@ python main.py --demo
 ```text
 taller_agentes/
 ├── Workshop_Agentes.ipynb     teoría, ejemplos y actividades
+├── GUIA_PASO_A_PASO.md        instrucciones del participante
 ├── agente/
 │   ├── agente.py              orquestación, Ollama, reglas y memoria
 │   ├── datos.py               dataset autocontenido
@@ -90,6 +91,9 @@ Abre el notebook:
 ```bash
 jupyter lab Workshop_Agentes.ipynb
 ```
+
+Si prefieres instrucciones lineales, mantén abierta
+`GUIA_PASO_A_PASO.md`: cada estación indica qué abrir, ejecutar y observar.
 
 Cuando aparezca **✋ Tu turno**, modifica el archivo indicado. Para usar el
 modelo real, mantén Ollama activo y ejecuta:

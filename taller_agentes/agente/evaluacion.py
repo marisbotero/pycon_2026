@@ -25,6 +25,14 @@ def ejecutar_evaluacion() -> None:
 
     print(f"\nResultado: {aprobados}/{len(casos)} casos aprobados")
 
+    mensual = agente.preguntar("¿Cuáles fueron las ventas del mes?")
+    limitacion_ok = (
+        mensual["estado"] == "no_disponible"
+        and mensual["valor"] is None
+        and "fecha" in mensual["mensaje"].lower()
+    )
+    print(f"{'✅' if limitacion_ok else '❌'} Consulta mensual sin datos temporales")
+
 
 if __name__ == "__main__":
     ejecutar_evaluacion()

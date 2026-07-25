@@ -136,10 +136,14 @@ class AgenteVentas:
     def contexto(self) -> str:
         if not self.memoria:
             return "Sin conversaciones anteriores."
-        return "\n".join(
-            f"P: {turno['pregunta']}\nR: {turno['respuesta']['valor']}"
-            for turno in self.memoria[-self.max_memoria :]
-        )
+        lineas = []
+        for turno in self.memoria[-self.max_memoria :]:
+            respuesta = turno["respuesta"]
+            resumen = respuesta["valor"]
+            if resumen is None:
+                resumen = respuesta.get("mensaje", "Sin resultado")
+            lineas.append(f"P: {turno['pregunta']}\nR: {resumen}")
+        return "\n".join(lineas)
 
     def limpiar_memoria(self) -> None:
         """Elimina el historial de la conversación."""
@@ -167,14 +171,46 @@ class AgenteVentas:
             return float(ordenado.iloc[posicion])
         raise ValueError(f"Operación no soportada: {decision.operacion}")
 
+    def _limitacion_de_datos(self, pregunta: str) -> Optional[dict[str, Any]]:
+        """Detecta preguntas que requieren información inexistente."""
+        texto = pregunta.lower()
+        palabras_temporales = {"mes", "mensual", "fecha", "año", "enero", "febrero",
+                               "marzo", "abril", "mayo", "junio", "julio", "agosto",
+                               "septiembre", "octubre", "noviembre", "diciembre"}
+        columnas_temporales = {"fecha", "mes", "año"}
+
+        requiere_tiempo = any(palabra in texto for palabra in palabras_temporales)
+        tiene_tiempo = bool(columnas_temporales & set(self.datos.columns))
+        if requiere_tiempo and not tiene_tiempo:
+            mensaje = (
+                "No puedo responder consultas mensuales porque el dataset "
+                "no contiene una columna de fecha, mes o año."
+            )
+            return {
+                "estado": "no_disponible",
+                "valor": None,
+                "explicacion": mensaje,
+                "decision": None,
+                "consistencia": None,
+                "mensaje": mensaje,
+            }
+        return None
+
     def preguntar(self, pregunta: str) -> dict[str, Any]:
+        limitacion = self._limitacion_de_datos(pregunta)
+        if limitacion:
+            self.memoria.append({"pregunta": pregunta, "respuesta": limitacion})
+            return limitacion
+
         decision = self.planificador(pregunta, self.contexto())
         valor = self.ejecutar(decision)
         respuesta = {
+            "estado": "listo",
             "valor": valor,
             "explicacion": f"El resultado calculado es {valor}.",
             "decision": asdict(decision),
             "consistencia": str(valor) in f"El resultado calculado es {valor}.",
+            "mensaje": None,
         }
         self.memoria.append({"pregunta": pregunta, "respuesta": respuesta})
         return respuesta

@@ -69,5 +69,13 @@ Prueba esta conversación:
 > Astra no ejecuta código arbitrario del modelo. Ollama propone una decisión
 > limitada y Python decide si puede ejecutarse.
 
+Si una pregunta requiere datos que no existen, Astra no inventa una operación:
+
+```text
+¿Cuáles fueron las ventas del mes?
+→ estado: no_disponible
+→ mensaje: el dataset no contiene fecha, mes o año
+```
+
 Cuando termines un ejercicio, compara tu trabajo con el índice de
 `../respuestas/README.md`.

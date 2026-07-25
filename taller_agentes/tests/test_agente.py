@@ -34,3 +34,13 @@ def test_clear_elimina_la_memoria():
     agente.preguntar("¿Cuál es el promedio de ventas?")
     agente.limpiar_memoria()
     assert agente.contexto() == "Sin conversaciones anteriores."
+
+
+def test_consulta_mensual_sin_fecha_no_inventa_resultado():
+    agente = AgenteVentas(cargar_ventas())
+    respuesta = agente.preguntar("¿Cuáles fueron las ventas del mes?")
+    assert respuesta["estado"] == "no_disponible"
+    assert respuesta["valor"] is None
+    assert respuesta["decision"] is None
+    assert "fecha" in respuesta["mensaje"].lower()
+    assert "no contiene" in agente.contexto().lower()

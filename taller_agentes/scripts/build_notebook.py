@@ -288,6 +288,68 @@ print(json.dumps(respuesta, ensure_ascii=False, indent=2))
 
 md(
     """
+## ⚠️ JSON válido no significa respuesta correcta
+
+Prueba mentalmente esta pregunta:
+
+> “¿Cuáles fueron las ventas del mes?”
+
+En la primera versión, Astra producía:
+
+```json
+{
+  "operacion": "ranking",
+  "columna": "ventas",
+  "agrupar_por": null,
+  "orden": "desc",
+  "limite": 1
+}
+```
+
+En lenguaje humano significa:
+
+> Ordena todas las ventas de mayor a menor y devuelve la primera.
+
+Por eso el resultado es `2200.0`: la venta individual más alta. El cálculo es
+correcto, pero responde otra pregunta.
+
+| Capa | ¿Funciona? |
+|---|---|
+| JSON con el formato esperado | ✅ |
+| Decisión ejecutable | ✅ |
+| Valor presente en la explicación | ✅ |
+| Intención mensual comprendida | ❌ |
+| Datos suficientes para responder | ❌ |
+
+`consistencia: true` solo comprueba que el valor calculado aparece en la
+explicación. No comprueba que el agente entendió la intención.
+
+Además:
+
+1. la pregunta no dice **qué mes**;
+2. el dataset no tiene `fecha`, `mes` ni `año`.
+
+Convertimos este hallazgo en una regla: la versión actual responde
+`estado="no_disponible"`, sin valor ni decisión. Un agente confiable también
+debe saber cuándo **no puede responder**.
+
+La explicación completa está en `GUIA_PASO_A_PASO.md`, estación 2.
+"""
+)
+
+code(
+    """
+respuesta_mensual = agente_demo.preguntar("¿Cuáles fueron las ventas del mes?")
+print(json.dumps(respuesta_mensual, ensure_ascii=False, indent=2))
+
+assert respuesta_mensual["estado"] == "no_disponible"
+assert respuesta_mensual["valor"] is None
+assert respuesta_mensual["decision"] is None
+"""
+)
+
+md(
+    """
 ## ¿Dónde entra Ollama?
 
 `crear_planificador_ollama()` envía a `gemma2:2b`:
