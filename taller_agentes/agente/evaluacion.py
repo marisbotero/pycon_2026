@@ -9,6 +9,8 @@ def ejecutar_evaluacion() -> None:
     casos = [
         ("¿Cuál region tuvo más ventas?", "Sur"),
         ("¿Cuál vendedor tuvo menos ventas?", "Pedro"),
+        ("¿Quién vendió mejor?", "Juan"),
+        ("¿Cuál vendedor tuvo más ventas totales?", "Juan"),
         ("¿Cuál es el promedio de ventas?", 1500.0),
     ]
 

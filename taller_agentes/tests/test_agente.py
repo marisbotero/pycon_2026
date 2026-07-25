@@ -44,3 +44,18 @@ def test_consulta_mensual_sin_fecha_no_inventa_resultado():
     assert respuesta["decision"] is None
     assert "fecha" in respuesta["mensaje"].lower()
     assert "no contiene" in agente.contexto().lower()
+
+
+def test_quien_vendio_mejor_agrupa_por_vendedor():
+    respuesta = AgenteVentas(cargar_ventas()).preguntar("¿Quién vendió mejor?")
+    assert respuesta["valor"] == {"nombre": "Juan", "valor": 6300.0}
+    assert respuesta["decision"]["agrupar_por"] == "vendedor"
+    assert respuesta["decision"]["operacion"] == "ranking"
+
+
+def test_mas_ventas_totales_es_ranking_no_suma_global():
+    respuesta = AgenteVentas(cargar_ventas()).preguntar(
+        "¿Cuál vendedor tuvo más ventas totales?"
+    )
+    assert respuesta["valor"] == {"nombre": "Juan", "valor": 6300.0}
+    assert respuesta["decision"]["operacion"] == "ranking"

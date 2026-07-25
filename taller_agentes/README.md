@@ -73,6 +73,7 @@ exacto para corregirlo.
 taller_agentes/
 ├── Workshop_Agentes.ipynb     teoría, ejemplos y actividades
 ├── GUIA_PASO_A_PASO.md        instrucciones del participante
+├── GUIA_CODIGO.md              explicación de todos los archivos .py
 ├── agente/
 │   ├── agente.py              orquestación, Ollama, reglas y memoria
 │   ├── datos.py               dataset autocontenido

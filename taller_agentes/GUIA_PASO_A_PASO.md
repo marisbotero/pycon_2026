@@ -211,7 +211,7 @@ PYTHONPATH=. pytest -q
 Esperamos:
 
 ```text
-6 passed
+8 passed
 ```
 
 Antes de modificar el proyecto, sabemos que funciona.
@@ -219,6 +219,9 @@ Antes de modificar el proyecto, sabemos que funciona.
 ---
 
 # Estación 1 · Conocer el repositorio
+
+Para una explicación línea por línea de responsabilidades, mantén abierta
+`GUIA_CODIGO.md`.
 
 ```text
 taller_agentes/

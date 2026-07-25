@@ -43,8 +43,9 @@ interacción.
 
 1. Lee la [guía del taller](taller_agentes/README.md).
 2. Sigue la [guía paso a paso](taller_agentes/GUIA_PASO_A_PASO.md).
-3. Abre [Workshop_Agentes.ipynb](taller_agentes/Workshop_Agentes.ipynb).
-4. Construye tu agente en [taller_agentes/agente](taller_agentes/agente).
+3. Consulta la [guía del código Python](taller_agentes/GUIA_CODIGO.md).
+4. Abre [Workshop_Agentes.ipynb](taller_agentes/Workshop_Agentes.ipynb).
+5. Construye tu agente en [taller_agentes/agente](taller_agentes/agente).
 
 **Duración:** 2 horas · **Nivel:** Python básico · **Motor:** Ollama local
 **PyCon 2026** · Taller práctico

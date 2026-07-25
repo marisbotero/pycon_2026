@@ -41,16 +41,21 @@ def aplicar_reglas(pregunta: str, contexto: str, decision: Decision) -> Decision
         (campo for campo in ("region", "vendedor", "producto") if campo in texto),
         decision.agrupar_por,
     )
+    if any(palabra in texto for palabra in ("quién", "quien", "persona", "responsable")):
+        agrupacion = "vendedor"
     if agrupacion is None and "segundo" in texto:
         agrupacion = next(
             (campo for campo in ("region", "vendedor", "producto") if campo in contexto.lower()),
             None,
         )
-    if any(palabra in texto for palabra in ("más", "mayor", "menos", "menor", "segundo")):
+    if any(
+        palabra in texto
+        for palabra in ("más", "mayor", "mejor", "menos", "menor", "segundo")
+    ):
         decision.operacion = "ranking"
     if any(palabra in texto for palabra in ("menos", "menor")):
         decision.orden = "asc"
-    elif any(palabra in texto for palabra in ("más", "mayor", "segundo")):
+    elif any(palabra in texto for palabra in ("más", "mayor", "mejor", "segundo")):
         decision.orden = "desc"
     decision.limite = 2 if "segundo" in texto else 1
     decision.columna = "cantidad" if "cantidad" in texto else decision.columna
@@ -70,7 +75,8 @@ Convierte la pregunta en una decisión JSON. No calcules la respuesta.
 Columnas numéricas: ventas, cantidad.
 Agrupaciones permitidas: region, vendedor, producto.
 Reglas:
-- "más", "mayor", "menos", "menor" y "segundo" siempre usan ranking.
+- "más", "mayor", "mejor", "menos", "menor" y "segundo" siempre usan ranking.
+- "quién", "quien", "persona" y "responsable" agrupan por vendedor.
 - "total de todas las ventas" usa suma sin agrupación.
 - "ventas por región" usa suma agrupada.
 - "promedio" usa promedio.
@@ -104,18 +110,22 @@ def planificador_demo(pregunta: str, contexto: str) -> Decision:
     """Planificador determinista para poder trabajar incluso sin internet."""
     texto = pregunta.lower()
     agrupar = next((c for c in ("region", "vendedor", "producto") if c in texto), None)
+    if any(palabra in texto for palabra in ("quién", "quien", "persona", "responsable")):
+        agrupar = "vendedor"
     if agrupar is None and "segundo" in texto:
         agrupar = next((c for c in ("region", "vendedor", "producto") if c in contexto.lower()), None)
     columna = "cantidad" if "cantidad" in texto else "ventas"
 
-    if "promedio" in texto or "media" in texto:
-        return Decision("promedio", columna, agrupar)
-    if "total" in texto or "suma" in texto:
-        return Decision("suma", columna, agrupar)
     if "menos" in texto or "menor" in texto or "mínim" in texto:
         return Decision("ranking", columna, agrupar, "asc", 1)
     if "segundo" in texto:
         return Decision("ranking", columna, agrupar, "desc", 2)
+    if "más" in texto or "mayor" in texto or "mejor" in texto:
+        return Decision("ranking", columna, agrupar, "desc", 1)
+    if "promedio" in texto or "media" in texto:
+        return Decision("promedio", columna, agrupar)
+    if "total" in texto or "suma" in texto:
+        return Decision("suma", columna, agrupar)
     return Decision("ranking", columna, agrupar, "desc", 1)
 
 
