@@ -27,3 +27,10 @@ def test_reglas_corrigen_una_decision_inconsistente():
     propuesta = Decision("suma", "ventas", "vendedor", "desc", 2)
     decision = aplicar_reglas("¿Cuál vendedor tuvo menos ventas?", "", propuesta)
     assert decision == Decision("ranking", "ventas", "vendedor", "asc", 1)
+
+
+def test_clear_elimina_la_memoria():
+    agente = AgenteVentas(cargar_ventas())
+    agente.preguntar("¿Cuál es el promedio de ventas?")
+    agente.limpiar_memoria()
+    assert agente.contexto() == "Sin conversaciones anteriores."

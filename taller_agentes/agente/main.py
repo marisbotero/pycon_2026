@@ -17,11 +17,20 @@ def main() -> None:
     planificador = planificador_demo if args.demo else crear_planificador_ollama(modelo)
     agente = AgenteVentas(cargar_ventas(), planificador=planificador)
     motor = "reglas de demostración" if args.demo else f"Ollama ({modelo})"
-    print(f"Agente de ventas listo con {motor}. Escribe /salir para terminar.")
+    print(f"Agente de ventas listo con {motor}.")
+    print("Comandos: /memoria, /clear, /salir")
     while True:
         pregunta = input("\nTu pregunta: ").strip()
-        if pregunta.lower() == "/salir":
+        comando = pregunta.lower()
+        if comando == "/salir":
             break
+        if comando == "/memoria":
+            print(agente.contexto())
+            continue
+        if comando == "/clear":
+            agente.limpiar_memoria()
+            print("Memoria eliminada.")
+            continue
         if pregunta:
             try:
                 print(json.dumps(agente.preguntar(pregunta), ensure_ascii=False, indent=2))

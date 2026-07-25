@@ -1,49 +1,73 @@
-# Tu agente
+# 🔮 Astra: tu agente de datos
 
-Esta carpeta contiene el proyecto práctico del taller. Ollama convierte cada
-pregunta en una decisión JSON y pandas ejecuta únicamente operaciones
-permitidas. No se usa OpenAI ni se necesita una API key.
+Esta es la carpeta que vas a tocar durante el taller. Astra recibe una
+pregunta, pide a Ollama una decisión JSON, aplica reglas, consulta los datos con
+pandas y guarda la interacción en memoria.
 
-## Ejecutar
-
-Primero instala Ollama y descarga el modelo del taller:
+## Ejecutar con Ollama
 
 ```bash
-ollama pull gemma2:2b
 ollama serve
 ```
 
-En otra terminal, desde esta carpeta:
+En otra terminal:
 
 ```bash
-python3 main.py
+python main.py
 ```
 
-Prueba estas preguntas:
-
-- `¿Cuál región tuvo más ventas?`
-- `¿Cuál vendedor tuvo menos ventas?`
-- `¿Cuál es el promedio de ventas?`
-
-La respuesta incluye el valor, una explicación, la decisión estructurada y una
-verificación sencilla de consistencia.
-
-Para comprobar el proyecto sin tener Ollama activo:
+El modelo predeterminado es `gemma2:2b`. Puedes cambiarlo:
 
 ```bash
-python3 main.py --demo
+OLLAMA_MODEL=otro-modelo python main.py
 ```
 
-## Ejercicios
+## Comandos
 
-Abre `ejercicios.py`, reemplaza los tres `TODO` y ejecútalo:
+- `/memoria`: muestra las interacciones recientes.
+- `/clear`: elimina el historial.
+- `/salir`: termina el programa.
+
+## Modo de respaldo
 
 ```bash
-python3 ejercicios.py
+python main.py --demo
 ```
 
-El objetivo no es escribir mucho código: es observar cómo cambia el
-comportamiento del sistema al cambiar su entrada, sus reglas y su memoria.
+Usa reglas deterministas, pero conserva el mismo ciclo del agente.
 
-> Este proyecto es educativo. No ejecuta código arbitrario generado por un
-> modelo y no debe presentarse como un sandbox de producción.
+## Archivos para explorar
+
+| Archivo | Propósito |
+|---|---|
+| `datos.py` | Dataset del taller |
+| `agente.py` | Decisión, Ollama, reglas, acción y memoria |
+| `main.py` | Conversación y comandos |
+| `ejercicios.py` | Práctica guiada |
+| `evaluacion.py` | Tres casos de calidad |
+| `reto_final.py` | Desafío de cierre |
+
+## Secuencia sugerida
+
+```bash
+python main.py --demo
+python ejercicios.py
+python evaluacion.py
+python reto_final.py
+python main.py
+```
+
+Prueba esta conversación:
+
+```text
+¿Cuál region tuvo más ventas?
+¿Y cuál quedó en segundo lugar?
+/memoria
+/clear
+```
+
+> Astra no ejecuta código arbitrario del modelo. Ollama propone una decisión
+> limitada y Python decide si puede ejecutarse.
+
+Cuando termines un ejercicio, compara tu trabajo con el índice de
+`../respuestas/README.md`.

@@ -141,6 +141,10 @@ class AgenteVentas:
             for turno in self.memoria[-self.max_memoria :]
         )
 
+    def limpiar_memoria(self) -> None:
+        """Elimina el historial de la conversación."""
+        self.memoria.clear()
+
     def ejecutar(self, decision: Decision) -> Any:
         if decision.columna not in {"ventas", "cantidad"}:
             raise ValueError("Columna no permitida")
